@@ -1,24 +1,88 @@
-const guessSubmit = document.querySelector(".guessSubmit");
-const guessField = document.querySelector(".guessField");
-const result = document.querySelector(".result");
-const count = document.querySelector(".count");
-let countNum =0;   //廣域變數
-let randomNumber = Math.floor(Math.random() * 100) ;
-console.log("觀察隨機的數字：", randomNumber);
+let secretNumber;
+let attempts = 0;
+let guessedNumbers = [];
+let score = 0;
+let timeLeft = 60;
+let timer;
+
+// DOM 元素
+const userGuess = document.getElementById("userGuess");
+const submitBtn = document.getElementById("submitBtn");
+const restartBtn = document.getElementById("restartBtn");
+const message = document.getElementById("message");
+const attemptsDisplay = document.getElementById("attempts");
+const guessedDisplay = document.getElementById("guessed");
+const timerDisplay = document.getElementById("timer");
+const scoreDisplay = document.getElementById("score");
+
+function initGame() {
+  // 初始化遊戲
+  secretNumber = Math.floor(Math.random() * 100) + 1;
+  attempts = 0;
+  guessedNumbers = [];
+  timeLeft = 60;
+  userGuess.disabled = false;
+  submitBtn.disabled = false;
+  message.textContent = "";
+  updateDisplay();
+
+  clearInterval(timer); // 清除之前的計時器
+  timer = setInterval(() => {
+    timeLeft--;
+    timerDisplay.textContent = `剩餘時間：${timeLeft} 秒`;
+    if (timeLeft <= 0) {
+      endGame(`⏰ 時間到！答案是 ${secretNumber}`);
+    }
+  }, 1000);
+}
+
+function updateDisplay() {
+  attemptsDisplay.textContent = `猜測次數：${attempts}`;
+  guessedDisplay.textContent = `已猜的數字：${guessedNumbers.length ? guessedNumbers.join(", ") : "無"}`;
+  scoreDisplay.textContent = `總分：${score}`;
+}
 
 function checkGuess() {
-    countNum++;
-    count.textContent = "猜測次數："+countNum;
-    //guessField.focus();       //游標焦點預設在輸入欄位裡
+  const guess = parseInt(userGuess.value);
+
+  if (isNaN(guess) || guess < 1 || guess > 100) {
+    message.textContent = "請輸入 1 到 100 之間的數字！";
+    return;
+  }
+
+  if (guessedNumbers.includes(guess)) {
+    message.textContent = "你已經猜過這個數字了！";
+    return;
+  }
+
+  guessedNumbers.push(guess);
+  attempts++;
+
+  if (guess === secretNumber) {
+    message.textContent = `🎉 恭喜你猜對了！答案是 ${secretNumber}`;
+    score += 10;
+    endGame("🎊 遊戲結束！");
+  } else if (guess > secretNumber) {
+    message.textContent = "數字太大了！";
+  } else {
+    message.textContent = "數字太小了！";
+  }
+
+  userGuess.value = "";
+  updateDisplay();
 }
-guessSubmit.addEventListener("click", checkGuess);   //當按鈕被點擊，執行函式
-const userGuess = Number(guessField.value);  //取得欄位值，並轉為數字
-if  (  userGuess === randomNumber ) {
-    result.textContent = "猜測結果：Congratulations!" ;
+
+function endGame(finalMessage) {
+  message.textContent = finalMessage;
+  userGuess.disabled = true;
+  submitBtn.disabled = true;
+  clearInterval(timer);
 }
-else if (userGuess  < randomNumber) {
-    result.textContent = "猜測結果：數字太小!" ;
-}
-else if (userGuess  >  randomNumber) {
-    result.textContent = "猜測結果：數字太大!";
-}
+
+submitBtn.addEventListener("click", checkGuess);
+restartBtn.addEventListener("click", initGame);
+
+// 初始啟動遊戲
+initGame();
+
+

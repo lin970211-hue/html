@@ -1,0 +1,112 @@
+/* 重設 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #2761cc;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 30px 40px;
+  border-radius: 12px;
+  width: 360px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+}
+
+h1 {
+  margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  color: #f1f1f1;
+}
+
+.desc {
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  color: #dcdcdc;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 18px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+input[type="number"]::placeholder {
+  color: #aaa;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  margin: 0 5px;
+  color: #fff;
+}
+
+.btn.primary {
+  background-color: #4caf50;
+}
+
+.btn.primary:hover {
+  background-color: #43a047;
+}
+
+.btn.secondary {
+  background-color: #e53935;
+}
+
+.btn.secondary:hover {
+  background-color: #d32f2f;
+}
+
+.message {
+  min-height: 28px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  color: #ffeb3b;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.info {
+  font-size: 0.95rem;
+  margin: 5px 0;
+  color: #e0e0e0;
+}
+
+.timer {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ff7043;
+  letter-spacing: 1px;
+}

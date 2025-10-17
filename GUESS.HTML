@@ -1,9 +1,77 @@
-  <div>
-    <h1>猜數字遊戲</h1>
-    <label for="guessField">猜一個數字 (1 到 100):</label>
-    <input type="number" class="guessField" id="guessField" min="1" max="100">
-    <button class="guessSubmit">提交</button>
-    <div class="result"></div>
-    <div class="count"></div>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>猜數字遊戲 🎯</title>
+  <style>
+    
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .game-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 320px;
+      text-align: center;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 8px;
+      font-size: 16px;
+      width: 80%;
+    }
+
+    #message {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    #timer {
+      color: #d35400;
+      font-weight: bold;
+    }
+
+    #score {
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h2>猜數字遊戲 🎯</h2>
+    <p>請輸入 1 ~ 100 之間的數字</p>
+    
+    <input type="number" id="userGuess" min="1" max="100" placeholder="輸入數字">
+    <br>
+    <button id="submitBtn">提交</button>
+    <button id="restartBtn">重新開始</button>
+
+    <p id="message"></p>
+    <p id="attempts">猜測次數：0</p>
+    <p id="guessed">已猜的數字：無</p>
+    <p id="timer">剩餘時間：60 秒</p>
+    <p id="score">總分：0</p>
   </div>
+<link rel="stylesheet" href="GUESS.css" />
+
+  <script src="GUESS.JS"></script>
+</body>
+</html>
+
+
+     
+
+
+
+
+
 
