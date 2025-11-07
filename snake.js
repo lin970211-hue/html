@@ -1,5 +1,8 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+const BLOCK_SIZE = 20;  //放大畫素，20點為一格
+const MAP_SIZE = canvas.width/BLOCK_SIZE ; // (寬400 / 格20) = 20格子(列)
+let score = 0;      // 紀錄分數
 //建立蛇蛇、蘋果物件    
 snake = { //身體位置    
 body: [ { x: MAP_SIZE / 2, y: MAP_SIZE / 2 } ],  
@@ -37,10 +40,111 @@ apple = {//蘋果位置
 x: 5,
 y: 5,
  //畫蘋果
-    drawApple: function () {
+    drawApple: function () {ctx.fillStyle = 'red';
+    ctx.fillRect(
+    this.x * BLOCK_SIZE ,
+    this.y * BLOCK_SIZE ,
+    BLOCK_SIZE ,
+    BLOCK_SIZE
+        );
     },
     //放蘋果
-    putApple: function () {
+    putApple: function () {this.x = Math.floor(Math.random() * MAP_SIZE);
+    this.y = Math.floor(Math.random() * MAP_SIZE);
+
     },
  }
+function gameStart() {
+    gameInterval = setInterval(drawGame, 100);
+}
+function keyDown(event) {
+    // Up (ArrowUp or W)
+    if (event.keyCode == 38 || event.keyCode == 87) {
+        if (snake.direction.y === 1) return; // can't go up if going down
+        snake.direction.y = -1;
+        snake.direction.x = 0;
+    }
+    // Down (ArrowDown or S)
+    else if (event.keyCode == 40 || event.keyCode == 83) {
+        if (snake.direction.y === -1) return; // can't go down if going up
+        snake.direction.y = 1;
+        snake.direction.x = 0;
+    }
+    // Left (ArrowLeft or A)
+    else if (event.keyCode == 37 || event.keyCode == 65) {
+        if (snake.direction.x === 1) return; // can't go left if going right
+        snake.direction.x = -1;
+        snake.direction.y = 0;
+    }
+    // Right (ArrowRight or D)
+    else if (event.keyCode == 39 || event.keyCode == 68) {
+        if (snake.direction.x === -1) return; // can't go right if going left
+        snake.direction.x = 1;
+        snake.direction.y = 0;
+    }
+}
+function drawGame() {
+    drawMap();
+    apple.drawApple();
+    snake.drawSnake();
+    eatApple(); 
+    drawScore();
+    checkDeath();    
+}
+function drawMap() {
+    ctx.fillStyle = 'black' ;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+function eatApple() {
+    if (snake.body[0].x === apple.x && snake.body[0].y === apple.y) {
+        snake.size += 1;
+        score++;
+        apple.putApple();
+    }
+}
+function drawScore() {
+    ctx.fillStyle = "white";
+    ctx.font = "10px Verdana";
+    ctx.fillText("Score " + score, canvas.width - 50, 10);    
+}
+function checkDeath() {
+    // hit walls
+    if( (snake.body[0].x < 0) ||
+        (snake.body[0].x >= MAP_SIZE)||
+        (snake.body[0].y < 0) ||
+        (snake.body[0].y >= MAP_SIZE)
+    ){
+        clearInterval(gameInterval);
+    }
+    // hit body
+    for (var i=1; i<snake.body.length; i++) {
+        if (snake.body[0].x === snake.body[i].x &&
+            snake.body[0].y === snake.body[i].y) {
+                clearInterval(gameInterval);
+            }  
+    }
+}
+// 🔸 使用原本的 Start 按鈕重新開始遊戲
+document.getElementById("buttonStart").addEventListener("click", function() {
+    clearInterval(gameInterval); // 停止上一次遊戲
 
+    // 重設蛇、蘋果、分數
+    snake.body = [ { x: MAP_SIZE / 2, y: MAP_SIZE / 2 } ];
+    snake.size = 5;
+    snake.direction = { x: 0, y: -1 };
+    apple.putApple();
+    score = 0;
+
+    // 重新啟動遊戲
+    gameStart();
+
+  
+});
+
+
+
+
+document.addEventListener("keydown", keyDown);
+
+/////
+gameStart(); //執行開始遊戲
